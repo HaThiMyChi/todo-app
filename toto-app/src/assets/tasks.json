@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Complete Angular Project",
+    "description": "Finish the Angular project with all functionalities",
+    "dueDate": "2024-06-30",
+    "priority": "High",
+    "status": "Pending"
+  },
+  {
+    "id": 2,
+    "title": "Prepare Presentation",
+    "description": "Prepare slides and demo for the presentation",
+    "dueDate": "2024-07-10",
+    "priority": "Medium",
+    "status": "Pending"
+  },
+  {
+    "id": 3,
+    "title": "Meeting with Client",
+    "description": "Discuss project requirements with the client",
+    "dueDate": "2024-07-05",
+    "priority": "High",
+    "status": "Pending"
+  }
+]
