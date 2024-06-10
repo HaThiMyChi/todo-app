@@ -4,26 +4,28 @@ import * as TaskActions from './task.actions';
 
 export interface TaskState {
   tasks: Task[];
+  error: any;
 }
 
 export const initialState: TaskState = {
-  tasks: []
+  tasks: [],
+  error: null
 };
 
-const _taskReducer = createReducer(
+export const taskReducer = createReducer(
   initialState,
   on(TaskActions.loadTasksSuccess, (state, { tasks }) => ({ ...state, tasks })),
-  on(TaskActions.addTask, (state, { task }) => ({ ...state, tasks: [...state.tasks, task] })),
-  on(TaskActions.updateTask, (state, { task }) => ({
+  on(TaskActions.loadTasksFailure, (state, { error }) => ({ ...state, error })),
+  on(TaskActions.addTaskSuccess, (state, { task }) => ({ ...state, tasks: [...state.tasks, task] })),
+  on(TaskActions.addTaskFailure, (state, { error }) => ({ ...state, error })),
+  on(TaskActions.updateTaskSuccess, (state, { task }) => ({
     ...state,
-    tasks: state.tasks.map(t => (t.id === task.id ? task : t))
+    tasks: state.tasks.map(t => t.id === task.id ? task : t)
   })),
-  on(TaskActions.deleteTask, (state, { id }) => ({
+  on(TaskActions.updateTaskFailure, (state, { error }) => ({ ...state, error })),
+  on(TaskActions.deleteTaskSuccess, (state, { id }) => ({
     ...state,
-    tasks: state.tasks.filter(task => task.id !== id)
-  }))
+    tasks: state.tasks.filter(t => t.id !== id)
+  })),
+  on(TaskActions.deleteTaskFailure, (state, { error }) => ({ ...state, error }))
 );
-
-export function taskReducer(state: TaskState | undefined, action: any) {
-  return _taskReducer(state, action);
-}

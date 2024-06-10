@@ -8,50 +8,23 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class TaskService {
-  private tasksUrl = 'assets/tasks.json';
+  private apiUrl = 'http://localhost:3000/tasks';
 
   constructor(private http: HttpClient) {}
 
   getTasks(): Observable<Task[]> {
-    return this.http.get<Task[]>(this.tasksUrl);
+    return this.http.get<Task[]>(this.apiUrl);
   }
 
-  addTask(newTask: Task): Observable<Task[]> {
-    return this.getTasks().pipe(
-      map(tasks => {
-        const maxId = Math.max(...tasks.map(task => task.id));
-        newTask.id = maxId + 1;
-        tasks.push(newTask);
-        this.saveTasks(tasks);
-        return tasks;
-      })
-    );
+  addTask(task: Task): Observable<Task> {
+    return this.http.post<Task>(this.apiUrl, task);
   }
 
-  updateTask(updatedTask: Task): Observable<Task[]> {
-    return this.getTasks().pipe(
-      map(tasks => {
-        const index = tasks.findIndex(task => task.id === updatedTask.id);
-        tasks[index] = updatedTask;
-        this.saveTasks(tasks);
-        return tasks;
-      })
-    );
+  updateTask(task: Task): Observable<Task> {
+    return this.http.put<Task>(`${this.apiUrl}/${task.id}`, task);
   }
 
-  deleteTask(id: number): Observable<Task[]> {
-    return this.getTasks().pipe(
-      map(tasks => {
-        const updatedTasks = tasks.filter(task => task.id !== id);
-        this.saveTasks(updatedTasks);
-        return updatedTasks;
-      })
-    );
-  }
-
-  private saveTasks(tasks: Task[]): void {
-    // In a real application, you would send a request to the server to save the data.
-    // For this example, we'll log the data to the console.
-    console.log('Saving tasks:', tasks);
+  deleteTask(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

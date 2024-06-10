@@ -1,9 +1,14 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { Task } from '../core/models/task.model';
+import { TaskState } from './task.reducer';
 
-export const selectTaskState = createFeatureSelector<Task[]>('tasks');
+export const selectTaskState = createFeatureSelector<TaskState>('tasks');
 
 export const selectAllTasks = createSelector(
   selectTaskState,
-  (tasks: Task[]) => tasks
+  (state: TaskState) => state.tasks
+);
+
+export const selectTaskError = createSelector(
+  selectTaskState,
+  (state: TaskState) => state.error
 );
